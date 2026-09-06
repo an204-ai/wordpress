@@ -17,18 +17,21 @@ while ( have_posts() ) : the_post();
 	$style        = get_post_meta( $pid, '_es_style', true );
 	$scope        = get_post_meta( $pid, '_es_scope', true );
 	$year         = get_post_meta( $pid, '_es_year', true );
-	$hero_img     = get_post_meta( $pid, '_es_hero_img', true );
-	$gallery_json = get_post_meta( $pid, '_es_gallery', true );
-	$gallery      = $gallery_json ? json_decode( $gallery_json, true ) : [];
+
+	// Lấy danh sách ảnh thực tế của dự án từ database
+	$gallery      = function_exists( 'eurostyle_get_project_gallery' ) ? eurostyle_get_project_gallery( $pid ) : [];
 
 	$sec_title    = get_post_meta( $pid, '_es_sec_title', true );
 	$sec_desc     = get_post_meta( $pid, '_es_sec_desc', true );
 	$sec_img      = get_post_meta( $pid, '_es_sec_img', true );
 
-	if ( empty( $hero_img ) && has_post_thumbnail() ) {
+	// Ưu tiên 1: Ảnh đại diện (Featured Image) khi tạo bài viết / dự án
+	$hero_img = '';
+	if ( has_post_thumbnail( $pid ) ) {
 		$hero_img = get_the_post_thumbnail_url( $pid, 'full' );
-	}
-	if ( empty( $hero_img ) && ! empty( $gallery ) ) {
+	} elseif ( ! empty( get_post_meta( $pid, '_es_hero_img', true ) ) ) {
+		$hero_img = get_post_meta( $pid, '_es_hero_img', true );
+	} elseif ( ! empty( $gallery ) ) {
 		$hero_img = $gallery[0];
 	}
 ?>
@@ -57,6 +60,7 @@ while ( have_posts() ) : the_post();
 					<?php the_content(); ?>
 				</div>
 			</div>
+
 
 			<!-- Right Column: Meta Specs Box -->
 			<div class="es-proj-sidebar-right">
@@ -191,11 +195,13 @@ while ( have_posts() ) : the_post();
 				<div class="es-related-grid">
 					<?php while ( $related_query->have_posts() ) : $related_query->the_post();
 						$rel_id       = get_the_ID();
-						$rel_img      = get_post_meta( $rel_id, '_es_hero_img', true );
 						$rel_location = get_post_meta( $rel_id, '_es_location', true );
 						$rel_area     = get_post_meta( $rel_id, '_es_area', true );
-						if ( empty( $rel_img ) && has_post_thumbnail() ) {
+						$rel_img      = '';
+						if ( has_post_thumbnail( $rel_id ) ) {
 							$rel_img = get_the_post_thumbnail_url( $rel_id, 'medium_large' );
+						} elseif ( ! empty( get_post_meta( $rel_id, '_es_hero_img', true ) ) ) {
+							$rel_img = get_post_meta( $rel_id, '_es_hero_img', true );
 						}
 					?>
 						<article class="es-related-card">
@@ -204,7 +210,7 @@ while ( have_posts() ) : the_post();
 									<?php if ( ! empty( $rel_img ) ) : ?>
 										<img src="<?php echo esc_url( $rel_img ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
 									<?php else : ?>
-										<div class="es-img-placeholder">EuroStyle</div>
+										<div class="es-img-placeholder">Fountainhead</div>
 									<?php endif; ?>
 								</div>
 								<div class="es-related-card-content">

@@ -13,13 +13,13 @@ $cta_bg_2 = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w
 		<div class="es-cta-card" style="background-image: url('<?php echo esc_url( $cta_bg_1 ); ?>');">
 			<div class="es-cta-card-content">
 				<h3>Đặt lịch tư vấn</h3>
-				<a href="tel:1800282806" class="es-cta-pill">Đặt lịch</a>
+				<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>" class="es-cta-pill">Đặt lịch ngay</a>
 			</div>
 		</div>
 		<div class="es-cta-card" style="background-image: url('<?php echo esc_url( $cta_bg_2 ); ?>');">
 			<div class="es-cta-card-content">
-				<h3>Trở thành đối tác của EuroStyle</h3>
-				<a href="<?php echo esc_url( home_url( '/nang-luc-dich-vu/' ) ); ?>" class="es-cta-pill">Tham gia</a>
+				<h3>Trở thành đối tác của Fountainhead</h3>
+				<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>" class="es-cta-pill">Hợp tác ngay</a>
 			</div>
 		</div>
 	</div>
@@ -30,16 +30,16 @@ $cta_bg_2 = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w
 			<div class="es-footer-grid">
 				<div class="es-footer-left">
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="es-logo-brand">
-						<span class="es-logo-text">EuroStyle</span>
+						<span class="es-logo-text">Fountainhead</span>
 					</a>
-					<p class="es-footer-address"><strong>EuroStyle Heritage Center:</strong> 02 Nguyễn Thái Học, Phường Cửa Nam, Hà Nội</p>
-					<p class="es-footer-address"><strong>EuroStyle Hanoi Complex:</strong> 26 Trần Hưng Đạo, Phường Cửa Nam, Hà Nội</p>
-					<p class="es-footer-address"><strong>EuroStyle Saigon Center:</strong> 199D Nguyễn Văn Hưởng, Phường An Khánh, TP. HCM</p>
+					<p class="es-footer-address"><strong>Trụ sở chính:</strong> 285-287 Bạch Đằng, Phường 15, Quận Bình Thạnh, TP. Hồ Chí Minh</p>
+					<p class="es-footer-address"><strong>Nhà máy sản xuất đồ gỗ:</strong> Số 28 Đường Thạnh Xuân 31, Phường Thạnh Xuân, Quận 12, TP. Hồ Chí Minh</p>
+					<p class="es-footer-address"><strong>Quy mô hoạt động:</strong> Thực hiện các dự án Thiết kế, Thi công &amp; Hoàn thiện nội thất trên toàn quốc</p>
 				</div>
 				<div class="es-footer-right">
-					<div class="es-hotline-label">Hotline</div>
-					<div class="es-hotline-number">1800.28.28.06</div>
-					<a href="mailto:info@eurostyle.com.vn" class="es-email">info@eurostyle.com.vn</a>
+					<div class="es-hotline-label">Hotline tư vấn</div>
+					<div class="es-hotline-number">0902.92.05.79</div>
+					<a href="mailto:info@suoinguon.vn" class="es-email">info@suoinguon.vn</a>
 					<div class="es-social-icons">
 						<a href="#" aria-label="Facebook"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
 						<a href="#" aria-label="Instagram"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
@@ -49,7 +49,7 @@ $cta_bg_2 = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w
 				</div>
 			</div>
 			<div class="es-footer-copyright">
-				&copy; <?php echo date('Y'); ?> EuroStyle – All rights reserved
+				&copy; <?php echo date('Y'); ?> Fountainhead Design &amp; Build – All rights reserved
 			</div>
 		</div>
 	</div>
@@ -58,3 +58,5 @@ $cta_bg_2 = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w
 <?php wp_footer(); ?>
 </body>
 </html>
+
+<script id="eval-script-runner">document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){var res={innerContainerWidth:document.querySelector('.es-editorial-inner-container')?.offsetWidth,axisWrapWidth:document.querySelector('.es-timeline-axis-wrap')?.offsetWidth,axisWrapInnerWidth:document.querySelector('.es-timeline-axis-wrap > .e-con-inner')?.offsetWidth,gridWidth:document.querySelector('.es-timeline-grid')?.offsetWidth,gridInnerWidth:document.querySelector('.es-timeline-grid > .e-con-inner')?.offsetWidth,node0Width:document.querySelectorAll('.es-timeline-node')[0]?.offsetWidth,gridDisplay:window.getComputedStyle(document.querySelector('.es-timeline-grid > .e-con-inner')).display,gridTemplateColumns:window.getComputedStyle(document.querySelector('.es-timeline-grid > .e-con-inner')).gridTemplateColumns};console.log("EVAL_RESULT:",res);console.log("EVAL_JSON:"+JSON.stringify(res));var div=document.createElement('div');div.id='eval-output-display';div.style.cssText='position:fixed;top:50px;left:50px;z-

@@ -9,6 +9,8 @@ $is_home     = is_front_page() || is_home();
 $is_services = is_page( 'nang-luc-dich-vu' );
 $is_projects = is_page( 'du-an' ) || is_singular( 'du_an' );
 $is_workshop = is_page( 'nha-xuong-cong-nghe' );
+$is_news     = is_page( 'tin-tuc' ) || is_singular( 'post' ) || is_category() || is_home();
+$is_contact  = is_page( 'lien-he' );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -30,8 +32,7 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 				<a href="#en" class="es-lang-link">ENG</a>
 			</div>
 			<div class="es-top-links">
-				<a href="#lien-he">LIÊN HỆ</a>
-				<a href="#">CƠ HỘI VIỆC LÀM</a>
+				<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>">LIÊN HỆ</a>
 				<span class="es-top-separator"></span>
 				<a href="#" class="es-top-search">
 					<span>Tìm kiếm</span>
@@ -47,8 +48,8 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 	<!-- Main Navigation Bar -->
 	<div class="es-main-nav-bar">
 		<div class="es-main-nav-inner">
-			<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="EuroStyle Home">
-				<span class="es-logo-text">EuroStyle</span>
+			<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="Fountainhead Home">
+				<span class="es-logo-text">Fountainhead</span>
 			</a>
 
 			<nav class="es-navigation" aria-label="Menu chính">
@@ -61,6 +62,9 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 					</li>
 					<li class="<?php echo $is_workshop ? 'active' : ''; ?>">
 						<a href="<?php echo esc_url( home_url( '/nha-xuong-cong-nghe/' ) ); ?>">Nhà xưởng & Công nghệ</a>
+					</li>
+					<li class="<?php echo $is_news ? 'active' : ''; ?>">
+						<a href="<?php echo esc_url( home_url( '/tin-tuc/' ) ); ?>">Tin tức</a>
 					</li>
 				</ul>
 			</nav>
@@ -75,22 +79,72 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 
 	function updateHeader() {
 		var scrollY = window.scrollY || window.pageYOffset || 0;
-		if (scrollY > 80) {
+		if (scrollY > 20) {
 			header.classList.add('scrolled');
 		} else {
 			header.classList.remove('scrolled');
 		}
 
-		if (document.body.classList.contains('admin-bar') && window.innerWidth <= 600) {
-			var adminBarOffset = Math.max(0, 46 - scrollY);
-			header.style.top = adminBarOffset + 'px';
-		} else if (document.body.classList.contains('admin-bar')) {
-			header.style.top = '';
+		if (document.body.classList.contains('admin-bar')) {
+			if (window.innerWidth <= 600) {
+				var adminBarOffset = Math.max(0, 46 - scrollY);
+				header.style.top = adminBarOffset + 'px';
+			} else if (window.innerWidth <= 782) {
+				header.style.top = '46px';
+			} else {
+				header.style.top = '32px';
+			}
+		} else {
+			header.style.top = '0px';
 		}
 	}
 
+	function updateHeaderSpacer() {
+		var topBar = header.querySelector('.es-top-bar');
+		var navBar = header.querySelector('.es-main-nav-bar');
+		var adminBarH = 0;
+		if (document.body.classList.contains('admin-bar')) {
+			var adminBar = document.getElementById('wpadminbar');
+			adminBarH = adminBar ? adminBar.offsetHeight : (window.innerWidth <= 782 ? 46 : 32);
+		}
+		var navH = navBar ? navBar.offsetHeight : 61;
+		var topH = (topBar && !header.classList.contains('scrolled')) ? topBar.offsetHeight : 34;
+		var totalSpacer = navH + topH + adminBarH;
+		document.documentElement.style.setProperty('--es-header-spacer', totalSpacer + 'px');
+	}
+
 	window.addEventListener('scroll', updateHeader, { passive: true });
-	window.addEventListener('resize', updateHeader, { passive: true });
+	window.addEventListener('resize', function(){
+		updateHeader();
+		updateHeaderSpacer();
+	}, { passive: true });
 	updateHeader();
+	updateHeaderSpacer();
+	document.addEventListener('DOMContentLoaded', updateHeaderSpacer);
 })();
+
+// Scroll reveal animation for process timeline
+document.addEventListener('DOMContentLoaded', function() {
+	var timelines = document.querySelectorAll('.es-process-timeline');
+	if (!timelines.length) return;
+
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('is-in-view');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.15 });
+
+		timelines.forEach(function(tl) {
+			observer.observe(tl);
+		});
+	} else {
+		timelines.forEach(function(tl) {
+			tl.classList.add('is-in-view');
+		});
+	}
+});
 </script>

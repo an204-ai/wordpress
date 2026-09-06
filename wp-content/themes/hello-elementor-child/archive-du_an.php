@@ -1,0 +1,1 @@
+<?php\n/**\n * Archive template for Custom Post Type du_an (Dự án)\n */\nif ( ! defined( 'ABSPATH' ) ) exit;\n\ninclude get_stylesheet_directory() . '/page-du-an.php';\n

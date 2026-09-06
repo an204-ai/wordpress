@@ -26,11 +26,11 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 				<span style="color: var(--es-gold); font-weight: 500;">VIE</span> &nbsp;|&nbsp; <a href="#en">ENG</a>
 			</div>
 			<div class="es-top-links">
-				<span>HOTLINE: <strong style="color: #ffffff; font-weight: 500;">1800 28 28 06</strong></span>
+				<span>HOTLINE: <strong style="color: #ffffff; font-weight: 500;">0902 92 05 79</strong></span>
 				<span>&bull;</span>
 				<a href="<?php echo esc_url( home_url( '/nang-luc-dich-vu/' ) ); ?>">HỒ SƠ NĂNG LỰC</a>
 				<span>&bull;</span>
-				<a href="#lien-he">LIÊN HỆ</a>
+				<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>">LIÊN HỆ</a>
 			</div>
 		</div>
 	</div>
@@ -38,13 +38,13 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 	<!-- Main Navigation Bar -->
 	<div class="es-main-nav-bar">
 		<div class="es-main-nav-inner">
-			<!-- Logo EuroStyle -->
-			<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="EuroStyle Home">
-				<span class="es-logo-text">EUROSTYLE</span>
+			<!-- Logo Fountainhead -->
+			<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="Fountainhead Home">
+				<span class="es-logo-text">FOUNTAINHEAD</span>
 				<span class="es-logo-tagline">DESIGN &amp; BUILD</span>
 			</a>
 
-			<!-- 4 Main Navigation Tabs -->
+			<!-- Main Navigation Tabs -->
 			<nav class="es-navigation" aria-label="Menu chính">
 				<ul class="es-menu-tabs">
 					<li class="<?php echo $is_home ? 'active current-menu-item' : ''; ?>">
@@ -59,12 +59,15 @@ $is_workshop = is_page( 'nha-xuong-cong-nghe' );
 					<li class="<?php echo $is_workshop ? 'active current-menu-item' : ''; ?>">
 						<a href="<?php echo esc_url( home_url( '/nha-xuong-cong-nghe/' ) ); ?>">Nhà xưởng &amp; Công nghệ</a>
 					</li>
+					<li class="<?php echo is_page('lien-he') ? 'active current-menu-item' : ''; ?>">
+						<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>">Liên hệ</a>
+					</li>
 				</ul>
 			</nav>
 
 			<!-- CTA Button (Pill Style) -->
 			<div class="es-header-actions">
-				<a href="#dat-lich" class="btn-es-pill-solid">
+				<a href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>" class="btn-es-pill-solid">
 					<span>Đặt lịch tư vấn</span>
 				</a>
 			</div>

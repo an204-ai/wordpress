@@ -39,7 +39,7 @@ $projects_query = new WP_Query([
 		<section class="es-filter-section">
 			<div class="es-filter-section-header">
 				<span class="es-filter-pre">DANH MỤC DỰ ÁN</span>
-				<h2 class="es-filter-title">KHÁM PHÁ CÁC CÔNG TRÌNH BIỂU TƯỢNG</h2>
+				<h2 class="es-filter-title">Dự Án Tiêu Biểu</h2>
 			</div>
 			
 			<div class="es-filter-pills" id="esProjectFilters">
@@ -59,35 +59,51 @@ $projects_query = new WP_Query([
 					while ( $projects_query->have_posts() ) : $projects_query->the_post();
 						$pid          = get_the_ID();
 						$slug         = get_post_field( 'post_name', $pid );
-						$hero_img     = get_post_meta( $pid, '_es_hero_img', true );
 						$area         = get_post_meta( $pid, '_es_area', true );
 						$location     = get_post_meta( $pid, '_es_location', true );
 						$style        = get_post_meta( $pid, '_es_style', true );
 						$year         = get_post_meta( $pid, '_es_year', true );
 
-						// Determine category for filter
-						$cat = 'khach-san';
-						if ( stripos( $slug, 'lotte' ) !== false || stripos( $slug, 'flagship' ) !== false || stripos( $slug, 'showroom' ) !== false ) {
-							$cat = 'thuong-mai';
-						} elseif ( stripos( $slug, 'techcombank' ) !== false || stripos( $slug, 'office' ) !== false || stripos( $slug, 'tru-so' ) !== false ) {
-							$cat = 'van-phong';
-						} elseif ( stripos( $slug, 'heritage' ) !== false || stripos( $slug, 'cai-tao' ) !== false ) {
-							$cat = 'cai-tao';
-						}
-
-						$cat_labels = [
-							'khach-san'  => 'Khách sạn & Nghỉ dưỡng',
-							'van-phong'  => 'Văn phòng & Trụ sở',
-							'thuong-mai' => 'Không gian thương mại',
-							'cai-tao'    => 'Cải tạo & Nâng cấp',
-						];
-						$cat_name = $cat_labels[ $cat ] ?? 'Dự án cao cấp';
-
-						if ( empty( $hero_img ) && has_post_thumbnail() ) {
+						// 1. IMAGE: Ưu tiên lấy Ảnh đại diện (Featured Image) khi tạo bài viết
+						$hero_img = '';
+						if ( has_post_thumbnail( $pid ) ) {
 							$hero_img = get_the_post_thumbnail_url( $pid, 'large' );
+						} elseif ( ! empty( get_post_meta( $pid, '_es_hero_img', true ) ) ) {
+							$hero_img = get_post_meta( $pid, '_es_hero_img', true );
+						} else {
+							// Lấy ảnh đầu tiên từ thư viện ảnh thực tế trong database
+							$gallery_list = function_exists( 'eurostyle_get_project_gallery' ) ? eurostyle_get_project_gallery( $pid ) : [];
+							if ( ! empty( $gallery_list ) ) {
+								$hero_img = $gallery_list[0];
+							}
 						}
 						if ( empty( $hero_img ) ) {
 							$hero_img = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
+						}
+
+						// 2. CATEGORY: Lấy từ danh mục phân loại dự án trong database
+						$cat = 'khach-san';
+						$cat_name = 'Khách sạn & Nghỉ dưỡng';
+						$terms = get_the_terms( $pid, 'danh_muc_du_an' );
+						if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+							$cat = $terms[0]->slug;
+							$cat_name = $terms[0]->name;
+						} else {
+							// Fallback theo tên hoặc từ khóa
+							if ( stripos( $slug, 'lotte' ) !== false || stripos( $slug, 'flagship' ) !== false || stripos( $slug, 'showroom' ) !== false ) {
+								$cat = 'thuong-mai';
+							} elseif ( stripos( $slug, 'techcombank' ) !== false || stripos( $slug, 'office' ) !== false || stripos( $slug, 'tru-so' ) !== false ) {
+								$cat = 'van-phong';
+							} elseif ( stripos( $slug, 'heritage' ) !== false || stripos( $slug, 'cai-tao' ) !== false ) {
+								$cat = 'cai-tao';
+							}
+							$cat_labels = [
+								'khach-san'  => 'Khách sạn & Nghỉ dưỡng',
+								'van-phong'  => 'Văn phòng & Trụ sở',
+								'thuong-mai' => 'Không gian thương mại',
+								'cai-tao'    => 'Cải tạo & Nâng cấp',
+							];
+							$cat_name = $cat_labels[ $cat ] ?? 'Dự án cao cấp';
 						}
 				?>
 					<article class="es-project-card-item" data-category="<?php echo esc_attr( $cat ); ?>">
@@ -95,7 +111,10 @@ $projects_query = new WP_Query([
 							<div class="es-card-media">
 								<img src="<?php echo esc_url( $hero_img ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
 								<div class="es-card-overlay">
-									<span class="es-btn-explore">Xem chi tiết</span>
+									<span class="es-btn-explore">
+										<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+										Xem chi tiết
+									</span>
 								</div>
 								<span class="es-badge-cat"><?php echo esc_html( $cat_name ); ?></span>
 							</div>
@@ -135,6 +154,75 @@ $projects_query = new WP_Query([
 		</section>
 
 	</div>
+
+	<!-- 4. BESPOKE EXECUTION & QUALITY COMMITMENTS SECTION -->
+	<section class="es-project-standards-section">
+		<div class="es-portfolio-main-container">
+			<div class="es-standards-header">
+				<h2 class="es-standards-title">Tiêu Chuẩn Bàn Giao</h2>
+				<p class="es-standards-desc">
+					Cam kết chất lượng và chuẩn mực thi công hoàn mỹ từ bản vẽ kỹ thuật đến thực tế công trình.
+				</p>
+			</div>
+
+			<div class="es-standards-grid">
+				<!-- Pillar 1 -->
+				<div class="es-standard-card">
+					<div class="es-standard-icon">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+						</svg>
+					</div>
+					<h3 class="es-standard-card-title">Độ Chuẩn Xác Cơ Khí 100%</h3>
+					<p class="es-standard-card-desc">
+						Số hóa dữ liệu CAD/BIM đồng bộ với máy cắt CNC 5 trục Châu Âu, cam kết công trình thực tế giống 100% bản vẽ 3D với dung sai cơ khí dưới 0.2mm.
+					</p>
+				</div>
+
+				<!-- Pillar 2 -->
+				<div class="es-standard-card">
+					<div class="es-standard-icon">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+						</svg>
+					</div>
+					<h3 class="es-standard-card-title">100% Vật Liệu Có Chứng Chỉ</h3>
+					<p class="es-standard-card-desc">
+						Minh bạch nguồn gốc CO/CQ với các thương hiệu toàn cầu hàng đầu như An Cường (CARB P2), Häfele Đức, Blum Áo và Vicostone thạch anh.
+					</p>
+				</div>
+
+				<!-- Pillar 3 -->
+				<div class="es-standard-card">
+					<div class="es-standard-icon">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+							<line x1="8" y1="21" x2="16" y2="21"/>
+							<line x1="12" y1="17" x2="12" y2="21"/>
+						</svg>
+					</div>
+					<h3 class="es-standard-card-title">Dựng Thử Dry-Fit Tại Xưởng</h3>
+					<p class="es-standard-card-desc">
+						Toàn bộ hệ tủ module và vách kiến trúc phức tạp được lắp dựng thử nghiệm tại xưởng Quận 12 trước khi vận chuyển, loại bỏ 100% xung đột tại công trường.
+					</p>
+				</div>
+
+				<!-- Pillar 4 -->
+				<div class="es-standard-card">
+					<div class="es-standard-icon">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="12" cy="12" r="10"/>
+							<polyline points="12 6 12 12 16 14"/>
+						</svg>
+					</div>
+					<h3 class="es-standard-card-title">Bảo Hành 02 Năm &amp; Bảo Trì</h3>
+					<p class="es-standard-card-desc">
+						Chính sách bảo hành kỹ thuật 24 tháng và bảo trì định kỳ 6 tháng một lần, đồng hành bền vững cùng vẻ đẹp và sự tiện nghi của mỗi công trình.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
 </main>
 
 <script>
