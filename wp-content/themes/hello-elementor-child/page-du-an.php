@@ -27,8 +27,7 @@ $projects_query = new WP_Query([
 		<div class="es-portfolio-hero-bg"></div>
 		<div class="es-portfolio-hero-overlay"></div>
 		<div class="es-portfolio-hero-content">
-			<span class="es-hero-tag">PORTFOLIO</span>
-			<h1 class="es-hero-heading">HỒ SƠ DỰ ÁN TIÊU BIỂU</h1>
+			<h1 class="es-hero-heading">Hồ Sơ Dự Án Tiêu Biểu</h1>
 			<p class="es-hero-desc">Mỗi công trình là một kiệt tác độc bản, từ đề bài khắt khe của Chủ đầu tư đến giải pháp thiết kế tinh hoa, quá trình thi công chuẩn quốc tế và nghiệm thu thực tế hoàn mỹ.</p>
 		</div>
 	</section>

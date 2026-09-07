@@ -163,21 +163,34 @@ get_header();
 							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
 						</div>
 						<div class="es-alert-content">
-							<h4>Tiếp nhận thông tin thành công!</h4>
-							<p>Cảm ơn Quý khách đã tin tưởng kết nối với Fountainhead. Chuyên viên tư vấn cấp cao sẽ liên hệ trực tiếp qua số điện thoại hoặc email trong vòng 24 giờ làm việc.</p>
+							<h4 id="contactSuccessTitle">Tiếp nhận thông tin thành công!</h4>
+							<p id="contactSuccessMsg">Cảm ơn Quý khách đã tin tưởng kết nối với Fountainhead. Chuyên viên tư vấn cấp cao sẽ liên hệ trực tiếp qua số điện thoại hoặc email trong vòng 24 giờ làm việc.</p>
+						</div>
+					</div>
+
+					<!-- Error Alert Box -->
+					<div class="es-form-alert es-alert-error" id="contactErrorAlert" style="display: none;">
+						<div class="es-alert-icon-wrap">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b71c1c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+						</div>
+						<div class="es-alert-content">
+							<h4>Chưa thể gửi thông tin</h4>
+							<p id="contactErrorMessage">Vui lòng kiểm tra lại các trường thông tin và thử lại.</p>
 						</div>
 					</div>
 
 					<!-- Form Element -->
 					<form id="fountainheadContactForm" class="es-interactive-form" method="post" action="#">
+						<?php wp_nonce_field( 'es_contact_nonce_action', 'es_contact_nonce' ); ?>
+						<input type="text" name="website_hp" value="" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true">
 						<input type="hidden" name="form_type" id="formTypeInput" value="consult">
 
 						<div class="es-form-grid">
 							<!-- Họ và tên -->
 							<div class="es-form-group">
-								<label for="contactFullName" class="es-form-label">Họ và tên Quý khách hoặc Tên đơn vị <span class="es-required">*</span></label>
+								<label for="contactFullName" class="es-form-label" id="labelFullName">Họ và tên Quý khách hoặc Tên đơn vị <span class="es-required">*</span></label>
 								<div class="es-input-wrapper">
-									<input type="text" id="contactFullName" name="full_name" class="es-form-control" placeholder="Ví dụ: Nguyễn Văn An" required>
+									<input type="text" id="contactFullName" name="full_name" class="es-form-control" placeholder="Nhập họ và tên hoặc tên đơn vị của bạn..." required>
 								</div>
 							</div>
 
@@ -185,7 +198,7 @@ get_header();
 							<div class="es-form-group">
 								<label for="contactPhone" class="es-form-label">Số điện thoại liên hệ <span class="es-required">*</span></label>
 								<div class="es-input-wrapper">
-									<input type="tel" id="contactPhone" name="phone" class="es-form-control" placeholder="Ví dụ: 0902 920 579" required>
+									<input type="tel" id="contactPhone" name="phone" class="es-form-control" placeholder="Nhập số điện thoại liên hệ của bạn..." required>
 								</div>
 							</div>
 
@@ -193,7 +206,7 @@ get_header();
 							<div class="es-form-group">
 								<label for="contactEmail" class="es-form-label">Địa chỉ Email <span class="es-required">*</span></label>
 								<div class="es-input-wrapper">
-									<input type="email" id="contactEmail" name="email" class="es-form-control" placeholder="Ví dụ: contact@example.com" required>
+									<input type="email" id="contactEmail" name="email" class="es-form-control" placeholder="Nhập địa chỉ email của bạn..." required>
 								</div>
 							</div>
 
@@ -238,7 +251,7 @@ get_header();
 							<div class="es-form-group full-width">
 								<label for="contactMessage" class="es-form-label">Nội dung chi tiết hoặc yêu cầu cụ thể</label>
 								<div class="es-input-wrapper">
-									<textarea id="contactMessage" name="message" class="es-form-control" rows="4" placeholder="Quý khách vui lòng chia sẻ thông tin về diện tích công trình, loại hình dự án (văn phòng, nhà máy, căn hộ, biệt thự...) hoặc yêu cầu cung ứng đồ gỗ..."></textarea>
+									<textarea id="contactMessage" name="message" class="es-form-control" rows="4" placeholder="Nhập thông tin diện tích công trình, loại hình dự án hoặc nội dung yêu cầu của bạn..."></textarea>
 								</div>
 							</div>
 						</div>
@@ -337,6 +350,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	var submitBtnText = document.getElementById('submitBtnText');
 	var contactForm = document.getElementById('fountainheadContactForm');
 	var successAlert = document.getElementById('contactSuccessAlert');
+	var errorAlert = document.getElementById('contactErrorAlert');
+	var errorMsg = document.getElementById('contactErrorMessage');
+	var successMsg = document.getElementById('contactSuccessMsg');
+	var ajaxUrl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
 
 	var consultOptions = [
 		{ value: '', text: '-- Vui lòng chọn hạng mục quan tâm --' },
@@ -368,6 +385,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	}
 
+	var inputFullName = document.getElementById('contactFullName');
+	var labelFullName = document.getElementById('labelFullName');
+	var inputMessage = document.getElementById('contactMessage');
+
 	if (tabBtnConsult && tabBtnPartner) {
 		tabBtnConsult.addEventListener('click', function() {
 			tabBtnConsult.classList.add('active');
@@ -376,7 +397,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			tabBtnPartner.setAttribute('aria-selected', 'false');
 
 			if (formTypeInput) formTypeInput.value = 'consult';
+			if (labelFullName) labelFullName.innerHTML = 'Họ và tên Quý khách hoặc Tên đơn vị <span class="es-required">*</span>';
+			if (inputFullName) inputFullName.placeholder = 'Nhập họ và tên hoặc tên đơn vị của bạn...';
 			if (labelService) labelService.innerHTML = 'Hạng mục Quý khách quan tâm <span class="es-required">*</span>';
+			if (inputMessage) inputMessage.placeholder = 'Nhập thông tin diện tích công trình, loại hình dự án hoặc nội dung yêu cầu của bạn...';
 			if (submitBtnText) submitBtnText.textContent = 'Gửi yêu cầu đặt lịch hẹn';
 			updateSelectOptions(consultOptions);
 		});
@@ -388,35 +412,83 @@ document.addEventListener('DOMContentLoaded', function() {
 			tabBtnConsult.setAttribute('aria-selected', 'false');
 
 			if (formTypeInput) formTypeInput.value = 'partner';
+			if (labelFullName) labelFullName.innerHTML = 'Tên Công ty / Đơn vị hoặc Người đại diện <span class="es-required">*</span>';
+			if (inputFullName) inputFullName.placeholder = 'Nhập tên công ty, đơn vị hoặc người đại diện...';
 			if (labelService) labelService.innerHTML = 'Mô hình hợp tác mong muốn <span class="es-required">*</span>';
+			if (inputMessage) inputMessage.placeholder = 'Nhập thông tin năng lực, giải pháp cung ứng hoặc đề xuất hợp tác của bạn...';
 			if (submitBtnText) submitBtnText.textContent = 'Gửi hồ sơ đăng ký hợp tác';
 			updateSelectOptions(partnerOptions);
 		});
 	}
 
-	// Interactive Form Submit with pleasant feedback
+	// Real AJAX Form Submission
 	if (contactForm) {
 		contactForm.addEventListener('submit', function(e) {
 			e.preventDefault();
 
 			var submitBtn = document.getElementById('contactSubmitBtn');
+			var origBtnText = submitBtnText ? submitBtnText.textContent : 'Gửi thông tin';
+
 			if (submitBtn) {
 				submitBtn.disabled = true;
 				submitBtn.style.opacity = '0.7';
 			}
+			if (submitBtnText) {
+				submitBtnText.textContent = 'Đang xử lý & gửi thông tin...';
+			}
 
-			// Simulate smooth submission handling
-			setTimeout(function() {
-				if (successAlert) {
-					successAlert.style.display = 'flex';
-					successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			if (errorAlert) errorAlert.style.display = 'none';
+
+			var formData = new FormData(contactForm);
+			formData.append('action', 'es_submit_contact');
+
+			fetch(ajaxUrl, {
+				method: 'POST',
+				body: formData
+			})
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(result) {
+				if (result.success) {
+					if (successAlert) {
+						if (successMsg && result.data && result.data.message) {
+							successMsg.textContent = result.data.message;
+						}
+						successAlert.style.display = 'flex';
+						successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}
+					if (errorAlert) errorAlert.style.display = 'none';
+					contactForm.reset();
+				} else {
+					if (errorAlert) {
+						if (errorMsg) {
+							errorMsg.textContent = (result.data && result.data.message) ? result.data.message : 'Đã có lỗi xảy ra. Vui lòng kiểm tra lại thông tin.';
+						}
+						errorAlert.style.display = 'flex';
+						errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}
 				}
-				contactForm.reset();
+			})
+			.catch(function(err) {
+				console.error('Submit error:', err);
+				if (errorAlert) {
+					if (errorMsg) {
+						errorMsg.textContent = 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau.';
+					}
+					errorAlert.style.display = 'flex';
+					errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				}
+			})
+			.finally(function() {
 				if (submitBtn) {
 					submitBtn.disabled = false;
 					submitBtn.style.opacity = '1';
 				}
-			}, 600);
+				if (submitBtnText) {
+					submitBtnText.textContent = origBtnText;
+				}
+			});
 		});
 	}
 });

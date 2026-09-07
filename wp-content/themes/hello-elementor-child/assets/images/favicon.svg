@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="fhGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dfbe7b"/>
+      <stop offset="50%" stop-color="#c5a059"/>
+      <stop offset="100%" stop-color="#9a7b38"/>
+    </linearGradient>
+    <linearGradient id="fhDarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1d1b"/>
+      <stop offset="100%" stop-color="#0e0d0c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#fhDarkGrad)"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="url(#fhGoldGrad)" stroke-width="6" opacity="0.65"/>
+  <!-- Luxury Architectural F Monogram -->
+  <path d="M156 128 H356 C364 128 370 134 370 142 V174 C370 182 364 188 356 188 H228 V232 H332 C340 232 346 238 346 246 V278 C346 286 340 292 332 292 H228 V370 C228 378 222 384 214 384 H170 C162 384 156 378 156 370 Z" fill="url(#fhGoldGrad)"/>
+  <!-- Diamond Accent -->
+  <polygon points="356,336 378,358 356,380 334,358" fill="url(#fhGoldGrad)"/>
+</svg>

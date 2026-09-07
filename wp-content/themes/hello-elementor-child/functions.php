@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EUROSTYLE_CHILD_VERSION', '1.4.7' );
+define( 'EUROSTYLE_CHILD_VERSION', '1.5.6' );
 
 /**
  * Enqueue scripts and styles.
@@ -99,6 +99,8 @@ add_action( 'send_headers', function() {
  */
 require_once get_stylesheet_directory() . '/inc/project-meta-box.php';
 require_once get_stylesheet_directory() . '/inc/brand-marquee.php';
+require_once get_stylesheet_directory() . '/inc/contact-manager.php';
+require_once get_stylesheet_directory() . '/inc/seo-manager.php';
 
 add_filter( 'request', function( $vars ) {
 	if ( ! is_admin() && isset( $vars['post_type'] ) && $vars['post_type'] === 'du_an' && ! isset( $vars['name'] ) ) {

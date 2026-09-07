@@ -47,6 +47,15 @@ while ( have_posts() ) : the_post();
 	<?php endif; ?>
 
 	<div class="es-proj-container">
+
+		<!-- Breadcrumbs -->
+		<nav class="es-breadcrumbs" aria-label="Breadcrumb">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Trang Chủ</a>
+			<span class="es-bc-sep">/</span>
+			<a href="<?php echo esc_url( home_url( '/du-an/' ) ); ?>">Dự Án</a>
+			<span class="es-bc-sep">/</span>
+			<span class="es-bc-current"><?php the_title(); ?></span>
+		</nav>
 		
 		<!-- 2. PROJECT TITLE & 2-COLUMN INFO -->
 		<section class="es-proj-header-info">
@@ -60,7 +69,6 @@ while ( have_posts() ) : the_post();
 					<?php the_content(); ?>
 				</div>
 			</div>
-
 
 			<!-- Right Column: Meta Specs Box -->
 			<div class="es-proj-sidebar-right">
@@ -94,6 +102,10 @@ while ( have_posts() ) : the_post();
 							</li>
 						<?php endif; ?>
 					</ul>
+
+					<div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+						<?php echo do_shortcode( '[fountainhead_social_share]' ); ?>
+					</div>
 				</div>
 			</div>
 		</section>
