@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EUROSTYLE_CHILD_VERSION', '1.5.6' );
+define( 'EUROSTYLE_CHILD_VERSION', '1.5.8' );
 
 /**
  * Enqueue scripts and styles.
@@ -102,6 +102,27 @@ require_once get_stylesheet_directory() . '/inc/brand-marquee.php';
 require_once get_stylesheet_directory() . '/inc/contact-manager.php';
 require_once get_stylesheet_directory() . '/inc/seo-manager.php';
 
+/**
+ * Register Custom Elementor Category & Widgets
+ */
+add_action( 'elementor/elements/categories_registered', function( $elements_manager ) {
+	$elements_manager->add_category(
+		'fountainhead-elements',
+		[
+			'title' => esc_html__( 'Fountainhead Luxury Elements', 'hello-elementor-child' ),
+			'icon'  => 'fa fa-gem',
+		]
+	);
+} );
+
+add_action( 'elementor/widgets/register', function( $widgets_manager ) {
+	require_once get_stylesheet_directory() . '/inc/widgets/hero-slider-widget.php';
+	$widgets_manager->register( new \Fountainhead_Hero_Slider_Widget() );
+
+	require_once get_stylesheet_directory() . '/inc/widgets/featured-projects-widget.php';
+	$widgets_manager->register( new \Fountainhead_Featured_Project_Slider_Widget() );
+} );
+
 add_filter( 'request', function( $vars ) {
 	if ( ! is_admin() && isset( $vars['post_type'] ) && $vars['post_type'] === 'du_an' && ! isset( $vars['name'] ) ) {
 		unset( $vars['post_type'] );
@@ -185,4 +206,86 @@ function eurostyle_home_latest_news_shortcode( $atts = [] ) {
 }
 add_shortcode( 'eurostyle_home_latest_news', 'eurostyle_home_latest_news_shortcode' );
 add_shortcode( 'fountainhead_home_latest_news', 'eurostyle_home_latest_news_shortcode' );
+
+/**
+ * Shortcode for Homepage: Dynamic Featured Projects Grid from Database
+ * Usage: [fountainhead_home_projects limit="4"]
+ */
+function fountainhead_home_projects_shortcode( $atts = [] ) {
+	$atts = shortcode_atts( [
+		'limit' => 4,
+	], $atts, 'fountainhead_home_projects' );
+
+	$query = new WP_Query( [
+		'post_type'      => 'du_an',
+		'post_status'    => 'publish',
+		'posts_per_page' => intval( $atts['limit'] ),
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	] );
+
+	if ( ! $query->have_posts() ) {
+		return '';
+	}
+
+	ob_start();
+	?>
+	<div class="es-home-projects-grid">
+		<?php
+		while ( $query->have_posts() ) :
+			$query->the_post();
+			$pid       = get_the_ID();
+			$post_link = get_permalink( $pid );
+			$title     = get_the_title( $pid );
+			$location  = get_post_meta( $pid, '_es_location', true );
+			$area      = get_post_meta( $pid, '_es_area', true );
+			$year      = get_post_meta( $pid, '_es_year', true );
+			
+			$thumb_url = has_post_thumbnail( $pid )
+				? get_the_post_thumbnail_url( $pid, 'large' )
+				: home_url( '/wp-content/uploads/2026/09/du-an-noi-bat-heritage.jpg' );
+		?>
+			<article class="es-home-project-card">
+				<a href="<?php echo esc_url( $post_link ); ?>" class="es-home-proj-media-link" aria-label="<?php echo esc_attr( $title ); ?>">
+					<div class="es-home-proj-img-wrap">
+						<img decoding="async" src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $title ); ?>" class="es-home-proj-img" loading="lazy" />
+						<!-- Dark Translucent Hover Curtain Layer -->
+						<div class="es-home-proj-hover-curtain">
+							<div class="es-home-proj-hover-content">
+								<span class="es-home-proj-explore-btn">
+									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+									<span>Xem chi tiết</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</a>
+				<div class="es-home-proj-info">
+					<h3 class="es-home-proj-title">
+						<a href="<?php echo esc_url( $post_link ); ?>">
+							<?php echo esc_html( $title ); ?>
+						</a>
+					</h3>
+					<div class="es-home-proj-meta">
+						<?php if ( ! empty( $location ) ) : ?>
+							<span class="es-home-proj-meta-item"><?php echo esc_html( $location ); ?></span>
+						<?php endif; ?>
+						<?php if ( ! empty( $area ) ) : ?>
+							<span class="es-home-proj-dot">•</span>
+							<span class="es-home-proj-meta-item"><?php echo esc_html( $area ); ?></span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</article>
+		<?php
+		endwhile;
+		wp_reset_postdata();
+		?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'fountainhead_home_projects', 'fountainhead_home_projects_shortcode' );
+add_shortcode( 'eurostyle_home_projects', 'fountainhead_home_projects_shortcode' );
+
 

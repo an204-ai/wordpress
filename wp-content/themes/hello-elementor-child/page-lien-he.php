@@ -18,7 +18,7 @@ get_header();
 		<div class="es-contact-hero-bg"></div>
 		<div class="es-contact-hero-overlay"></div>
 		<div class="es-contact-hero-content">
-			<h1 class="es-contact-hero-title">LIÊN HỆ &amp; ĐẶT LỊCH HẸN</h1>
+			<h1 class="es-contact-hero-title">Liên Hệ &amp; Hợp Tác</h1>
 			<p class="es-contact-hero-desc">
 				Fountainhead hân hạnh đồng hành cùng Quý khách hàng, Chủ đầu tư và các đối tác trong việc kiến tạo những công trình kiến trúc, nội thất và nhà máy công nghiệp hoàn mỹ theo tiêu chuẩn chất lượng cao nhất.
 			</p>

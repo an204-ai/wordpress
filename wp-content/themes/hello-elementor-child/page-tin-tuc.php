@@ -39,7 +39,7 @@ if ( empty( $categories ) ) {
 		<div class="es-news-hero-bg"></div>
 		<div class="es-news-hero-overlay"></div>
 		<div class="es-news-hero-content">
-			<h1 class="es-news-hero-title">TIN TỨC &amp; SỰ KIỆN</h1>
+			<h1 class="es-news-hero-title">Tin Tức &amp; Sự Kiện</h1>
 			<p class="es-news-hero-desc">Cập nhật những hoạt động mới nhất, góc nhìn chuyên gia kiến trúc và xu hướng vật liệu cao cấp từ Fountainhead.</p>
 		</div>
 	</section>
