@@ -146,7 +146,7 @@ function eurostyle_home_latest_news_shortcode( $atts = [] ) {
 			$cat_name  = ! empty( $cats ) ? $cats[0]->name : __( 'Tin tức', 'hello-elementor-child' );
 			$thumb_url = has_post_thumbnail( $post_id )
 				? get_the_post_thumbnail_url( $post_id, 'large' )
-				: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
+				: home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 		?>
 			<article class="es-home-news-card">
 				<a href="<?php echo esc_url( $post_link ); ?>" class="es-home-news-thumb-link" aria-label="<?php echo esc_attr( $title ); ?>">

@@ -77,7 +77,7 @@ $projects_query = new WP_Query([
 							}
 						}
 						if ( empty( $hero_img ) ) {
-							$hero_img = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
+							$hero_img = home_url( '/wp-content/uploads/2026/09/du-an-noi-bat-heritage.jpg' );
 						}
 
 						// 2. CATEGORY: Lấy từ danh mục phân loại dự án trong database

@@ -7,8 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$cta_bg_1 = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
-$cta_bg_2 = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop';
+$cta_bg_1 = home_url( '/wp-content/uploads/2026/09/cta-dat-lich-tu-van.jpg' );
+$cta_bg_2 = home_url( '/wp-content/uploads/2026/09/cta-hop-tac-doi-tac.jpg' );
 ?>
 <footer id="site-footer" class="site-footer-es">
 	<!-- Dual Call-to-Action Cards (Signature EuroStyle Footer Feature) -->

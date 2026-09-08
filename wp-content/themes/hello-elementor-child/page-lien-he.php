@@ -41,7 +41,7 @@ get_header();
 				<!-- Cơ sở 1: Trụ sở chính Bạch Đằng -->
 				<article class="es-showroom-card">
 					<div class="es-showroom-media">
-						<img src="http://localhost/wordpress/wp-content/uploads/2026/09/hero-trang-chu.jpg" alt="Trụ sở chính Fountainhead" loading="lazy">
+						<img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/09/dich-vu-design-build.jpg' ) ); ?>" alt="Trụ sở chính Fountainhead" loading="lazy">
 						<span class="es-showroom-badge">Bình Thạnh, TP.HCM</span>
 					</div>
 					<div class="es-showroom-body">
@@ -72,7 +72,7 @@ get_header();
 				<!-- Cơ sở 2: Xưởng sản xuất mộc Thạnh Xuân -->
 				<article class="es-showroom-card">
 					<div class="es-showroom-media">
-						<img src="http://localhost/wordpress/wp-content/uploads/2026/09/flagship-showroom-featured-1024x540.jpg" alt="Xưởng sản xuất đồ gỗ Fountainhead" loading="lazy">
+						<img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/09/xuong-moc-tong-the.jpg' ) ); ?>" alt="Xưởng sản xuất đồ gỗ Fountainhead" loading="lazy">
 						<span class="es-showroom-badge">Quận 12, TP.HCM</span>
 					</div>
 					<div class="es-showroom-body">
@@ -103,7 +103,7 @@ get_header();
 				<!-- Cơ sở 3: Dự án & Thi công toàn quốc -->
 				<article class="es-showroom-card">
 					<div class="es-showroom-media">
-						<img src="http://localhost/wordpress/wp-content/uploads/2026/09/the-coral-villa-featured-1024x683.jpg" alt="Dự án toàn quốc Fountainhead" loading="lazy">
+						<img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/09/du-an-doc-let-resort.jpg' ) ); ?>" alt="Dự án toàn quốc Fountainhead" loading="lazy">
 						<span class="es-showroom-badge">Toàn quốc</span>
 					</div>
 					<div class="es-showroom-body">

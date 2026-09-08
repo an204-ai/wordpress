@@ -4,8 +4,8 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$cta_bg_1 = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop';
-$cta_bg_2 = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop';
+$cta_bg_1 = home_url( '/wp-content/uploads/2026/09/cta-dat-lich-tu-van.jpg' );
+$cta_bg_2 = home_url( '/wp-content/uploads/2026/09/cta-hop-tac-doi-tac.jpg' );
 ?>
 <footer class="site-footer-es">
 	<!-- Dual CTA Cards -->

@@ -53,7 +53,7 @@ $cat_count = $curr_cat ? $curr_cat->count : 0;
 
 					$thumb_url = has_post_thumbnail( $pid )
 						? get_the_post_thumbnail_url( $pid, 'large' )
-						: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
+						: home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 				?>
 					<article class="es-cat-card-item">
 						<a href="<?php the_permalink(); ?>" class="es-cat-card-link">

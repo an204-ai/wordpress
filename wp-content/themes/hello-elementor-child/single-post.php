@@ -28,7 +28,7 @@ while ( have_posts() ) : the_post();
 	if ( has_post_thumbnail( $pid ) ) {
 		$hero_img = get_the_post_thumbnail_url( $pid, 'full' );
 	} else {
-		$hero_img = 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1400&auto=format&fit=crop';
+		$hero_img = home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 	}
 ?>
 
@@ -124,7 +124,7 @@ while ( have_posts() ) : the_post();
 						if ( has_post_thumbnail( $rel_id ) ) {
 							$rel_img = get_the_post_thumbnail_url( $rel_id, 'medium_large' );
 						} else {
-							$rel_img = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop';
+							$rel_img = home_url( '/wp-content/uploads/2026/09/tin-tuc-xuong-moc.jpg' );
 						}
 					?>
 						<article class="es-rel-card-item">

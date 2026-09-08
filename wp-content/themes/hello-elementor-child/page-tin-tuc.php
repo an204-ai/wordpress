@@ -90,7 +90,7 @@ if ( empty( $categories ) ) {
 					$feat_date  = get_the_date( 'd/m/Y', $feat_id );
 					$feat_thumb = has_post_thumbnail( $feat_id )
 						? get_the_post_thumbnail_url( $feat_id, 'large' )
-						: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop';
+						: home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 					?>
 					<article class="es-news-fw-card featured">
 						<a href="<?php echo esc_url( get_permalink( $feat_id ) ); ?>" class="es-news-fw-card-link">
@@ -126,7 +126,7 @@ if ( empty( $categories ) ) {
 								$sub_date  = get_the_date( 'd/m/Y', $sub_id );
 								$sub_thumb = has_post_thumbnail( $sub_id )
 									? get_the_post_thumbnail_url( $sub_id, 'medium_large' )
-									: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800&auto=format&fit=crop';
+									: home_url( '/wp-content/uploads/2026/09/tin-tuc-xuong-moc.jpg' );
 							?>
 								<article class="es-news-fw-card stacked">
 									<a href="<?php echo esc_url( get_permalink( $sub_id ) ); ?>" class="es-news-fw-card-link">
