@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EUROSTYLE_CHILD_VERSION', '1.5.8' );
+define( 'EUROSTYLE_CHILD_VERSION', '1.7.4' );
 
 /**
  * Enqueue scripts and styles.
@@ -78,20 +78,16 @@ function eurostyle_register_cpt_du_an() {
 add_action( 'init', 'eurostyle_register_cpt_du_an' );
 
 /**
- * Ensure both /du_an/ and /du-an/ reliably open the Projects page without permanent browser caching
+ * Ensure both /du_an/ and /du-an/ reliably open the Projects page
  */
 add_action( 'template_redirect', function() {
 	$uri = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
-	// If visiting /wordpress/du_an or /du_an (without a single project slug)
 	if ( $uri === 'wordpress/du_an' || $uri === 'du_an' ) {
+		// Only set no-cache for this specific redirect
+		header( 'Cache-Control: no-cache, must-revalidate, max-age=0' );
 		wp_safe_redirect( home_url( '/du-an/' ), 302 );
 		exit;
 	}
-} );
-
-// Prevent browser from caching redirects
-add_action( 'send_headers', function() {
-	header( 'Cache-Control: no-cache, must-revalidate, max-age=0' );
 } );
 
 /**
@@ -121,6 +117,36 @@ add_action( 'elementor/widgets/register', function( $widgets_manager ) {
 
 	require_once get_stylesheet_directory() . '/inc/widgets/featured-projects-widget.php';
 	$widgets_manager->register( new \Fountainhead_Featured_Project_Slider_Widget() );
+} );
+
+/**
+ * Elementor Cache Protection: Khi mở Elementor Editor, xóa CSS cache cũ
+ * để Elementor luôn load giao diện mới nhất từ database, không dùng bản cache cũ.
+ */
+add_action( 'elementor/editor/before_enqueue_scripts', function() {
+	$post_id = get_the_ID();
+	if ( ! $post_id && isset( $_GET['post'] ) ) {
+		$post_id = intval( $_GET['post'] );
+	}
+	if ( $post_id ) {
+		// Xóa CSS cache cũ để Elementor rebuild từ _elementor_data mới nhất
+		delete_post_meta( $post_id, '_elementor_css' );
+	}
+} );
+
+/**
+ * Elementor Auto-Save Protection: Xóa bản autosave cũ khi mở editor
+ * để tránh Elementor load bản draft cũ thay vì bản published mới nhất.
+ */
+add_action( 'elementor/editor/init', function() {
+	$post_id = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
+	if ( $post_id > 0 ) {
+		// Xóa autosave cũ để Elementor buộc phải load từ bản published
+		$autosave = wp_get_post_autosave( $post_id );
+		if ( $autosave ) {
+			wp_delete_post_revision( $autosave->ID );
+		}
+	}
 } );
 
 add_filter( 'request', function( $vars ) {

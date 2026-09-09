@@ -322,12 +322,12 @@ get_header();
 					</div>
 					<div class="es-map-iframe-container">
 						<iframe 
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.248888796117!2d106.7027179!3d10.7922442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528b488737df9%3A0x6a0c5c479dc8c654!2zMjg1IELhuqFjaCDEkOG6sW5nLCBQaMaw4budbmcgMTUsIELDrG5oIFRo4bqhbmg!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" 
+							src="https://maps.google.com/maps?q=285+B%E1%BA%A1ch+%C4%90%E1%BA%B1ng,+Ph%C6%B0%E1%BB%9Dng+15,+B%C3%ACnh+Th%E1%BA%A1nh,+H%E1%BB%93+Ch%C3%AD+Minh&t=&z=16&ie=UTF8&iwloc=&output=embed" 
 							width="100%" 
 							height="360" 
-							style="border:0;" 
+							style="border:0; width: 100%; height: 100%; min-height: 320px;" 
 							allowfullscreen="" 
-							loading="lazy" 
+							loading="eager" 
 							referrerpolicy="no-referrer-when-downgrade"
 							title="Bản đồ Trụ sở Fountainhead">
 						</iframe>

@@ -16,7 +16,7 @@ $is_contact  = is_page( 'lien-he' );
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -48,9 +48,17 @@ $is_contact  = is_page( 'lien-he' );
 	<!-- Main Navigation Bar -->
 	<div class="es-main-nav-bar">
 		<div class="es-main-nav-inner">
-			<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="Fountainhead Home">
-				<span class="es-logo-text">Fountainhead</span>
-			</a>
+			<?php if ( $is_home ) : ?>
+				<h1 class="es-logo-heading-wrap">
+					<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="Fountainhead Home">
+						<span class="es-logo-text">Fountainhead</span>
+					</a>
+				</h1>
+			<?php else : ?>
+				<a href="<?php echo esc_url( $home_url ); ?>" class="es-logo-brand" aria-label="Fountainhead Home">
+					<span class="es-logo-text">Fountainhead</span>
+				</a>
+			<?php endif; ?>
 
 			<nav class="es-navigation" aria-label="Menu chính">
 				<ul class="es-menu-tabs">

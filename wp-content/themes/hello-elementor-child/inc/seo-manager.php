@@ -44,11 +44,11 @@ class Fountainhead_SEO_Manager {
 		}
 		$default_img = get_stylesheet_directory_uri() . '/assets/images/favicon.svg';
 
-		// Try to find a hero image in uploads for default OG image
-		$hero_fallback = 'http://localhost/wordpress/wp-content/uploads/2026/09/hero-trang-chu.jpg';
+		// Try to find a high-res image in uploads for default OG image
+		$hero_fallback = home_url( '/wp-content/uploads/2026/09/dich-vu-design-build.jpg' );
 
 		$data = [
-			'title'       => $site_name . ' | Thiết Kế & Thi Công Nội Thất Cao Cấp',
+			'title'       => $site_name . ' | Thiết Kế & Thi Công Nội Thất Cao Cấp & Nhà Xưởng Chuẩn Quốc Tế',
 			'description' => 'Fountainhead Design & Build – Tổng thầu thiết kế, thi công nội thất biệt thự, khách sạn, văn phòng cao cấp và nhà máy sản xuất đồ gỗ chuẩn quốc tế tại TP.HCM.',
 			'url'         => home_url( '/' ),
 			'type'        => 'website',
@@ -57,34 +57,36 @@ class Fountainhead_SEO_Manager {
 
 		if ( is_front_page() || is_home() ) {
 			$data['title']       = $site_name . ' | Thiết Kế & Thi Công Nội Thất Cao Cấp & Nhà Xưởng Chuẩn Quốc Tế';
-			$data['description'] = 'Fountainhead Design & Build – Tổng thầu thiết kế, thi công nội thất biệt thự, khách sạn, văn phòng cao cấp và nhà máy sản xuất đồ gỗ chuẩn quốc tế tại TP.HCM.';
+			$data['description'] = 'Fountainhead Design & Build – Tổng thầu thiết kế, thi công nội thất biệt thự, resort cao cấp, văn phòng hạng A và tổ hợp nhà xưởng sản xuất đồ gỗ chuẩn quốc tế.';
 			$data['url']         = home_url( '/' );
 			$data['type']        = 'website';
 			$data['image']       = $hero_fallback;
 		} elseif ( is_page( 'nang-luc-dich-vu' ) ) {
-			$data['title']       = 'Năng Lực & Dịch Vụ Thiết Kế Kiến Trúc Nội Thất | ' . $site_name;
-			$data['description'] = 'Khám phá năng lực tổng thầu thiết kế, thi công nội thất trọn gói và quy trình quản trị dự án chuẩn mực quốc tế của Fountainhead.';
+			$data['title']       = 'Năng Lực & Dịch Vụ Tổng Thầu Design & Build | ' . $site_name;
+			$data['description'] = 'Khám phá năng lực tổng thầu thiết kế, thi công nội thất trọn gói Chìa khóa trao tay và quy trình quản trị dự án chuẩn mực quốc tế của Fountainhead.';
 			$data['url']         = home_url( '/nang-luc-dich-vu/' );
 			$data['type']        = 'website';
-			$data['image']       = $hero_fallback;
+			$data['image']       = home_url( '/wp-content/uploads/2026/09/dich-vu-design-build.jpg' );
 		} elseif ( is_page( 'du-an' ) || ( is_archive() && 'du_an' === get_post_type() ) ) {
 			$data['title']       = 'Hồ Sơ Dự Án Tiêu Biểu | Thiết Kế & Thi Công ' . $site_name;
-			$data['description'] = 'Bộ sưu tập các công trình khách sạn, resort nghỉ dưỡng, văn phòng thương mại và biệt thự cao cấp do Fountainhead kiến tạo.';
+			$data['description'] = 'Bộ sưu tập các công trình biệt thự độc bản, resort ven biển, văn phòng thương mại và nhà xưởng tiêu biểu do Fountainhead kiến tạo.';
 			$data['url']         = home_url( '/du-an/' );
 			$data['type']        = 'website';
-			$data['image']       = $hero_fallback;
+			$data['image']       = home_url( '/wp-content/uploads/2026/09/du-an-doc-let-resort.jpg' );
 		} elseif ( is_singular( 'du_an' ) ) {
 			$pid          = get_the_ID();
 			$title        = get_the_title( $pid );
 			$area         = get_post_meta( $pid, '_es_area', true );
 			$location     = get_post_meta( $pid, '_es_location', true );
 			$style        = get_post_meta( $pid, '_es_style', true );
+			$scope        = get_post_meta( $pid, '_es_scope', true );
 			$thumb_url    = has_post_thumbnail( $pid ) ? get_the_post_thumbnail_url( $pid, 'full' ) : get_post_meta( $pid, '_es_hero_img', true );
 
 			$desc_parts = [];
 			if ( ! empty( $location ) ) $desc_parts[] = 'Địa điểm: ' . $location;
 			if ( ! empty( $area ) ) $desc_parts[] = 'Diện tích: ' . $area;
 			if ( ! empty( $style ) ) $desc_parts[] = 'Phong cách: ' . $style;
+			if ( ! empty( $scope ) ) $desc_parts[] = 'Hạng mục: ' . $scope;
 			$desc_extra = ! empty( $desc_parts ) ? ' (' . implode( ' | ', $desc_parts ) . ')' : '';
 
 			$excerpt = get_the_excerpt( $pid );
@@ -92,25 +94,25 @@ class Fountainhead_SEO_Manager {
 				$excerpt = wp_trim_words( strip_tags( get_the_content( null, false, $pid ) ), 28, '...' );
 			}
 
-			$data['title']       = $title . ' - Dự Án Thiết Kế & Thi Công | ' . $site_name;
-			$data['description'] = ! empty( $excerpt ) ? $excerpt . $desc_extra : 'Dự án ' . $title . ' thực hiện bởi Fountainhead Design & Build.' . $desc_extra;
+			$data['title']       = $title . ' - Hồ Sơ Dự Án | ' . $site_name;
+			$data['description'] = ! empty( $excerpt ) ? $excerpt . $desc_extra : 'Dự án ' . $title . ' thực hiện bởi tổng thầu Fountainhead Design & Build.' . $desc_extra;
 			$data['url']         = get_permalink( $pid );
 			$data['type']        = 'article';
 			if ( ! empty( $thumb_url ) ) {
 				$data['image'] = $thumb_url;
 			}
 		} elseif ( is_page( 'nha-xuong-cong-nghe' ) ) {
-			$data['title']       = 'Nhà Xưởng Sản Xuất Đồ Gỗ & Công Nghệ Chế Tác Cao Cấp | ' . $site_name;
-			$data['description'] = 'Nhà máy sản xuất nội thất gỗ quy mô lớn tại TP.HCM với hệ thống máy móc hiện đại và quy trình kiểm soát chất lượng QA/QC nghiêm ngặt.';
+			$data['title']       = 'Nhà Xưởng Sản Xuất Đồ Gỗ & Công Nghệ Hiện Đại | ' . $site_name;
+			$data['description'] = 'Nhà máy sản xuất nội thất gỗ quy mô lớn tại Quận 12, TP.HCM với hệ thống máy móc CNC 5 trục Châu Âu độ chuẩn xác cơ khí < 0.2mm.';
 			$data['url']         = home_url( '/nha-xuong-cong-nghe/' );
 			$data['type']        = 'website';
-			$data['image']       = $hero_fallback;
+			$data['image']       = home_url( '/wp-content/uploads/2026/09/xuong-moc-tong-the.jpg' );
 		} elseif ( is_page( 'tin-tuc' ) ) {
 			$data['title']       = 'Tin Tức, Sự Kiện & Xu Hướng Kiến Trúc Nội Thất | ' . $site_name;
 			$data['description'] = 'Cập nhật những hoạt động mới nhất, góc nhìn chuyên gia kiến trúc và xu hướng vật liệu cao cấp từ Fountainhead.';
 			$data['url']         = home_url( '/tin-tuc/' );
 			$data['type']        = 'website';
-			$data['image']       = $hero_fallback;
+			$data['image']       = home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 		} elseif ( is_singular( 'post' ) ) {
 			$pid       = get_the_ID();
 			$title     = get_the_title( $pid );
@@ -118,7 +120,7 @@ class Fountainhead_SEO_Manager {
 			if ( empty( $excerpt ) ) {
 				$excerpt = wp_trim_words( strip_tags( get_the_content( null, false, $pid ) ), 30, '...' );
 			}
-			$thumb_url = has_post_thumbnail( $pid ) ? get_the_post_thumbnail_url( $pid, 'full' ) : $hero_fallback;
+			$thumb_url = has_post_thumbnail( $pid ) ? get_the_post_thumbnail_url( $pid, 'full' ) : home_url( '/wp-content/uploads/2026/09/tin-tuc-tong-thau.jpg' );
 
 			$data['title']       = $title . ' | Tin Tức ' . $site_name;
 			$data['description'] = $excerpt;
@@ -136,7 +138,7 @@ class Fountainhead_SEO_Manager {
 			$data['url']         = get_category_link( get_queried_object_id() );
 			$data['type']        = 'website';
 		} elseif ( is_page( 'lien-he' ) ) {
-			$data['title']       = 'Liên Hệ & Đặt Lịch Hẹn Tư Vấn Dự Án | ' . $site_name;
+			$data['title']       = 'Liên Hệ & Đặt Lịch Hẹn Tư Vấn Dự Án 24/7 | ' . $site_name;
 			$data['description'] = 'Liên hệ trực tiếp với Fountainhead hoặc đặt lịch hẹn tư vấn thiết kế thi công nội thất, hợp tác cung ứng vật liệu trên toàn quốc.';
 			$data['url']         = home_url( '/lien-he/' );
 			$data['type']        = 'website';
@@ -277,7 +279,7 @@ class Fountainhead_SEO_Manager {
 			],
 		];
 
-		// 2. WebSite with SiteNavigationElement
+		// 2. WebSite with Google Sitelinks SearchBox Action
 		$schemas[] = [
 			'@context' => 'https://schema.org',
 			'@type'    => 'WebSite',
@@ -287,10 +289,15 @@ class Fountainhead_SEO_Manager {
 			'publisher' => [
 				'@id' => $home_url . '#organization',
 			],
+			'potentialAction' => [
+				'@type'       => 'SearchAction',
+				'target'      => $home_url . '?s={search_term_string}',
+				'query-input' => 'required name=search_term_string',
+			],
 			'inLanguage' => 'vi',
 		];
 
-		// 3. BreadcrumbList for subpages
+		// 3. BreadcrumbList for Subpages, Posts, Projects & Categories
 		if ( ! is_front_page() && ! is_home() ) {
 			$items = [
 				[
@@ -334,6 +341,19 @@ class Fountainhead_SEO_Manager {
 					'name'     => get_the_title(),
 					'item'     => get_permalink(),
 				];
+			} elseif ( is_category() ) {
+				$items[] = [
+					'@type'    => 'ListItem',
+					'position' => 2,
+					'name'     => 'Tin Tức',
+					'item'     => home_url( '/tin-tuc/' ),
+				];
+				$items[] = [
+					'@type'    => 'ListItem',
+					'position' => 3,
+					'name'     => single_cat_title( '', false ),
+					'item'     => get_category_link( get_queried_object_id() ),
+				];
 			}
 
 			$schemas[] = [
@@ -363,6 +383,32 @@ class Fountainhead_SEO_Manager {
 					'@id' => $home_url . '#organization',
 				],
 			];
+		} elseif ( is_singular( 'du_an' ) ) {
+			$pid          = get_the_ID();
+			$area         = get_post_meta( $pid, '_es_area', true );
+			$location     = get_post_meta( $pid, '_es_location', true );
+			$style        = get_post_meta( $pid, '_es_style', true );
+			$scope        = get_post_meta( $pid, '_es_scope', true );
+			$gallery      = function_exists( 'eurostyle_get_project_gallery' ) ? eurostyle_get_project_gallery( $pid ) : [];
+
+			$schemas[] = [
+				'@context'    => 'https://schema.org',
+				'@type'       => 'CreativeWork',
+				'name'        => get_the_title( $pid ),
+				'headline'    => get_the_title( $pid ),
+				'description' => $seo_data['description'],
+				'image'       => ! empty( $gallery ) ? array_merge( [ $seo_data['image'] ], $gallery ) : $seo_data['image'],
+				'creator'     => [
+					'@id' => $home_url . '#organization',
+				],
+				'locationCreated' => ! empty( $location ) ? [
+					'@type' => 'Place',
+					'name'  => $location,
+				] : null,
+				'genre'       => ! empty( $style ) ? $style : 'Kiến trúc & Nội thất cao cấp',
+				'keywords'    => 'thiết kế nội thất, thi công nội thất, tổng thầu design and build, ' . get_the_title( $pid ),
+				'url'         => get_permalink( $pid ),
+			];
 		} elseif ( is_page( 'lien-he' ) ) {
 			$schemas[] = [
 				'@context'    => 'https://schema.org',
@@ -372,6 +418,7 @@ class Fountainhead_SEO_Manager {
 				'url'         => home_url( '/lien-he/' ),
 			];
 		}
+
 
 		foreach ( $schemas as $schema ) {
 			echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";

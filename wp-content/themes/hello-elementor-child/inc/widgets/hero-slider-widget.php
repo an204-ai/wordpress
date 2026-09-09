@@ -195,7 +195,7 @@ class Fountainhead_Hero_Slider_Widget extends \Elementor\Widget_Base {
 								$yt_id = $yt_match[1] ?? 'b200bIKY3k0';
 							?>
 								<div class="es-hero-video-wrapper es-hero-yt-wrapper">
-									<iframe class="es-hero-yt-iframe" src="https://www.youtube.com/embed/<?php echo esc_attr( $yt_id ); ?>?autoplay=1&mute=1&controls=0&loop=1&playlist=<?php echo esc_attr( $yt_id ); ?>&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									<iframe id="yt-hero-player-<?php echo esc_attr( $this->get_id() ); ?>" class="es-hero-yt-iframe" src="https://www.youtube-nocookie.com/embed/<?php echo esc_attr( $yt_id ); ?>?autoplay=1&mute=1&controls=0&loop=1&playlist=<?php echo esc_attr( $yt_id ); ?>&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1&fs=0&origin=<?php echo esc_attr( home_url() ); ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 								</div>
 							<?php else : ?>
 								<div class="es-hero-video-wrapper">
@@ -214,9 +214,11 @@ class Fountainhead_Hero_Slider_Widget extends \Elementor\Widget_Base {
 						<div class="es-hero-slider-overlay" style="background-color: <?php echo esc_attr( $overlay ); ?>;"></div>
 
 						<!-- Centered Serif Heading (Like EuroStyle Heritage Center) -->
-						<?php if ( ! empty( $title ) ) : ?>
+						<?php if ( ! empty( $title ) ) : 
+							$heading_tag = ( is_front_page() && $index === 0 ) ? 'h1' : 'h2';
+						?>
 							<div class="es-hero-slide-content">
-								<h2 class="es-hero-slide-title"><?php echo esc_html( $title ); ?></h2>
+								<<?php echo $heading_tag; ?> class="es-hero-slide-title"><?php echo esc_html( $title ); ?></<?php echo $heading_tag; ?>>
 							</div>
 						<?php endif; ?>
 					</div>
@@ -242,6 +244,57 @@ class Fountainhead_Hero_Slider_Widget extends \Elementor\Widget_Base {
 
 			var items = slider.querySelectorAll('.es-hero-slider-item');
 			var dots = slider.querySelectorAll('.es-hero-dot');
+			var ytIframe = slider.querySelector('.es-hero-yt-iframe');
+			var ytPlayer = null;
+
+			// Initialize YouTube Iframe API for rock-solid mobile autoplay & no pause controls
+			if (ytIframe) {
+				if (!window.YT || !window.YT.Player) {
+					var tag = document.createElement('script');
+					tag.src = "https://www.youtube.com/iframe_api";
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+				}
+
+				function initYT() {
+					if (window.YT && window.YT.Player) {
+						ytPlayer = new YT.Player(ytIframe.id, {
+							events: {
+								onReady: function(e) {
+									e.target.mute();
+									e.target.playVideo();
+								},
+								onStateChange: function(e) {
+									// If mobile browser pauses video automatically, force resume muted
+									if (e.data === YT.PlayerState.PAUSED) {
+										e.target.playVideo();
+									}
+								}
+							}
+						});
+					} else {
+						setTimeout(initYT, 100);
+					}
+				}
+				initYT();
+
+				// Mobile Autoplay Trigger on first user interaction (touch/scroll)
+				function triggerMobilePlay() {
+					if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+						ytPlayer.mute();
+						ytPlayer.playVideo();
+					}
+					var vids = slider.querySelectorAll('video');
+					vids.forEach(function(v) {
+						v.muted = true;
+						v.play().catch(function(){});
+					});
+				}
+				['touchstart', 'touchend', 'scroll', 'click'].forEach(function(evt) {
+					document.addEventListener(evt, triggerMobilePlay, { once: true, passive: true });
+				});
+			}
+
 			if (items.length <= 1) return;
 
 			var currentIndex = 0;
@@ -254,6 +307,9 @@ class Fountainhead_Hero_Slider_Widget extends \Elementor\Widget_Base {
 						if (vid) {
 							vid.currentTime = 0;
 							vid.play().catch(function(){});
+						}
+						if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+							ytPlayer.playVideo();
 						}
 					} else {
 						item.classList.remove('is-active');
